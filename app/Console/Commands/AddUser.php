@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Console\Commands;
 
-use App\Actions\Balance\CreateBalanceAction;
 use App\Actions\User\CreateUserAction;
 use App\Actions\User\Data\CreateUserData;
 use Illuminate\Console\Command;
@@ -19,7 +18,6 @@ class AddUser extends Command
 
     public function __construct(
         private readonly CreateUserAction $createUserAction,
-        private readonly CreateBalanceAction $createBalanceAction,
     ) {
         parent::__construct();
     }
@@ -28,14 +26,13 @@ class AddUser extends Command
     {
         try {
             DB::transaction(function () {
-                $user = $this->createUserAction->exec(
+                $this->createUserAction->exec(
                     CreateUserData::validateAndCreate([
                         'name' => $this->option('name') ?? $this->argument('login'),
                         'email' => $this->argument('login'),
                         'password' => $this->argument('password'),
                     ])
                 );
-                $this->createBalanceAction->exec($user);
             });
         } catch (ValidationException $e) {
             $this->error($e->getMessage());

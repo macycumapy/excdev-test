@@ -6,9 +6,11 @@ namespace App\Models;
 
 use App\Builders\UserBuilder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Collection;
 use Laravel\Sanctum\HasApiTokens;
 
 /**
@@ -17,6 +19,7 @@ use Laravel\Sanctum\HasApiTokens;
  * @property string $email
  * @property string $password
  * @property-read Balance $balance
+ * @property-read Collection<Operation> $operations
  * @mixin UserBuilder
  */
 class User extends Authenticatable
@@ -48,5 +51,10 @@ class User extends Authenticatable
     public function balance(): HasOne
     {
         return $this->hasOne(Balance::class);
+    }
+
+    public function operations(): HasMany
+    {
+        return  $this->hasMany(Operation::class);
     }
 }
