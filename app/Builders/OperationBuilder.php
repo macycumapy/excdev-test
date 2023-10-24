@@ -14,6 +14,9 @@ class OperationBuilder extends Builder
 {
     public function searchByDescription(?string $description = null): self
     {
-        return $this->whereRaw('lower(description) like ?', '%' . mb_strtolower($description) . '%');
+        return $this->when(
+            !empty($description),
+            fn (Builder $q) => $q->whereRaw('lower(description) like ?', '%' . mb_strtolower($description) . '%')
+        );
     }
 }

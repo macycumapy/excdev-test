@@ -14,7 +14,7 @@ class OperationController extends Controller
 {
     public function index(Request $request): JsonResponse
     {
-        $items = Operation::searchByDescription($request->get('search', ''))
+        $items = Operation::searchByDescription($request->get('search'))
             ->orderBy('created_at', $request->get('direction', 'asc'))
             ->paginate(15);
 
