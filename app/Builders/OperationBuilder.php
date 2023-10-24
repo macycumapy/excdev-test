@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Builder;
  */
 class OperationBuilder extends Builder
 {
-    public function searchByDescription(?string $description = null)
+    public function searchByDescription(?string $description = null): self
     {
         return $this->whereRaw('lower(description) like ?', '%' . mb_strtolower($description) . '%');
     }

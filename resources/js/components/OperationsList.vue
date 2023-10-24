@@ -13,7 +13,7 @@
       <div class="col-md-12">
         <div class="card position-relative">
           <div class="row p-2">
-            <div class="col">Дата</div>
+            <div class="col cursor-pointer" @click="changeSortDirection">Дата</div>
             <div class="col">Тип</div>
             <div class="col">Сумма</div>
             <div class="col">Описание</div>
@@ -49,18 +49,26 @@ export default {
       page: 1,
       total: 0,
       search: null,
+      sortAsc: true,
     }
   },
   mounted() {
     this.getOperations();
   },
   methods: {
+    changeSortDirection() {
+      this.sortAsc = !this.sortAsc;
+      this.getOperations();
+    },
     getOperations(url = '/api/operation') {
       if (!url) {
         return
       }
       axios.get(url, {
-        params: {search: this.search}
+        params: {
+            search: this.search,
+            direction: this.sortAsc ? 'asc' : 'desc',
+        }
       })
           .then((response) => {
             this.items = response.data.items

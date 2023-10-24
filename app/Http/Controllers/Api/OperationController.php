@@ -14,7 +14,9 @@ class OperationController extends Controller
 {
     public function index(Request $request): JsonResponse
     {
-        $items = Operation::searchByDescription($request->get('search', ''))->paginate(15);
+        $items = Operation::searchByDescription($request->get('search', ''))
+            ->orderBy('created_at', $request->get('direction', 'asc'))
+            ->paginate(15);
 
         return response()->json(
             OperationPaginatorResource::make($items)
