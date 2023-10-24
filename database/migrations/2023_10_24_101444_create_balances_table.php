@@ -6,7 +6,8 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class () extends Migration {
+class CreateBalancesTable extends Migration
+{
     /**
      * Run the migrations.
      *
@@ -14,10 +15,11 @@ return new class () extends Migration {
      */
     public function up()
     {
-        Schema::create('password_resets', function (Blueprint $table) {
-            $table->string('email')->index();
-            $table->string('token');
-            $table->timestamp('created_at')->nullable();
+        Schema::create('balances', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('user_id')->unique()->constrained('users')->cascadeOnDelete();
+            $table->unsignedFloat('sum')->default(0.0);
+            $table->timestamps();
         });
     }
 
@@ -28,6 +30,6 @@ return new class () extends Migration {
      */
     public function down()
     {
-        Schema::dropIfExists('password_resets');
+        Schema::dropIfExists('user_balances');
     }
-};
+}
